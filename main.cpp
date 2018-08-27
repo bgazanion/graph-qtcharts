@@ -2,11 +2,13 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 
 #include "mainwindow.h"
 #include "field.h"
 #include "dataset.h"
 #include "rng.h"
+#include "stringlib.h"
 
 
 int main(int argc, char *argv[])
@@ -33,6 +35,7 @@ int main(int argc, char *argv[])
     */
 
     //-- debug "dataset"
+    /*
     Dataset dataset;
     int size = 20;
     dataset.setSize(size);
@@ -44,6 +47,29 @@ int main(int argc, char *argv[])
         dataset.addField(tmpField);
     }
     dataset.printInfo();
+    */
+
+    //-- debug stringlib
+    std::vector<std::string> testStr = { "zaekazjkjkl,adeaz,dazdazd,dzadz",
+                                        "yoman",
+                                        "",
+                                        ",,,,,,,",
+                                        "yrgre,",
+                                        ",erzerez"
+                                       };
+    for (std::string t : testStr)
+    {
+        std::cout << "string tested: " << '"' << t << '"' << "\n";
+        for (std::size_t index : findAll(t, ','))
+        {
+            std::cout << index << "\n";
+        }
+        for (std::string str : split(t, ','))
+        {
+            std::cout << "'" << str << "'" << "\n";
+        }
+        std::cout << std::endl;
+    }
 
 
     QApplication a(argc, argv);
