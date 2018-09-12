@@ -26,8 +26,9 @@ public:
     Dataset();
 
     // set private members
-    void setSize(int size);
+    void setSize(unsigned int size);
     void addField(Field field);
+    void setValue(std::string name, float value, unsigned int index);
 
     // get private members & infos
     unsigned int getSize();

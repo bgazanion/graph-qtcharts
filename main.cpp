@@ -9,6 +9,7 @@
 #include "dataset.h"
 #include "rng.h"
 #include "stringlib.h"
+#include "readers.h"
 
 
 int main(int argc, char *argv[])
@@ -50,6 +51,7 @@ int main(int argc, char *argv[])
     */
 
     //-- debug stringlib
+    /*
     std::vector<std::string> testStr = { "zaekazjkjkl,adeaz,dazdazd,dzadz",
                                         "yoman",
                                         "",
@@ -70,6 +72,12 @@ int main(int argc, char *argv[])
         }
         std::cout << std::endl;
     }
+    */
+
+    //-- debug CSV reader
+    std::string fileName = "D:\\Prog\\datasets\\Rdatasets\\aids_cut_nice.csv";
+    Dataset data = readCSV(fileName);
+    data.printInfo();
 
 
     QApplication a(argc, argv);

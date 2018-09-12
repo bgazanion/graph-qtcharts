@@ -56,3 +56,32 @@ vector<string> split(string inputStr, char separator)
     }
 
 }
+
+
+vector<string> renameDuplicates(vector<string> input)
+{
+    vector<string> output = input;
+    int duplicates = 0;
+
+    for (unsigned int index=0; index<input.size(); ++index)
+    {
+        // count number of duplicates in lower indices
+        duplicates = 0;
+        for (unsigned int i=0; i<index; ++i)
+        {
+            if ( (i!=index) && (input[i]==input[index]) )
+            {
+                duplicates ++;
+            }
+        }
+
+        // rename if required
+        if (duplicates > 0)
+        {
+            output[index] += "_";
+            output[index] += to_string(duplicates);
+        }
+    }
+
+    return output;
+}

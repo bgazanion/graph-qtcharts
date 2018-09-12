@@ -9,9 +9,9 @@ Dataset::Dataset()
 }
 
 
-void Dataset::setSize(int size)
+void Dataset::setSize(unsigned int size)
 {
-    m_size = static_cast<unsigned int>(size);
+    m_size = size;
 }
 
 
@@ -29,6 +29,42 @@ void Dataset::addField(Field field)
         std::cout << "addField: size mismatch" << std::endl;
     }
 }
+
+
+void Dataset::setValue(std::string name, float value, unsigned int index)
+{
+    // error: index too high
+    if (index >= m_size)
+    {
+        std::cout << "setValue: index exceeds data size" << std::endl;
+        return;
+    }
+
+    // find field
+    unsigned int fieldIndex = 0;
+    bool found = false;
+    for (unsigned int i=0; i<m_names.size(); ++i)
+    {
+        // return corresponding field
+        if (name==m_names[i])
+        {
+            found = true;
+            fieldIndex = i;
+        }
+    }
+
+    // error: field name not found
+    if (!found)
+    {
+        std::cout << "setValue: field name not found" << std::endl;
+        return;
+    }
+
+    // assign value
+    m_fields[fieldIndex].setValue(value, index);
+    return;
+}
+
 
 
 unsigned int Dataset::getSize()
@@ -51,13 +87,18 @@ std::vector<std::string> Dataset::getNames()
 
 Field Dataset::getField(std::string name)
 {
-    for (Field field : m_fields)
+    unsigned int index = 0;
+    for (std::string fieldName : m_names)
     {
-        if (field.getName() == name)
+        // return corresponding field
+        if (name==fieldName)
         {
-            return field;
+            return m_fields[index];
         }
+
+        index ++;
     }
+
 
     // return empty field if the requested field is not found
     std::cout << "getField: requested field not found" << std::endl;

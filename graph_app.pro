@@ -27,13 +27,17 @@ SOURCES += \
         mainwindow.cpp \
         field.cpp \
     dataset.cpp \
-    rng.cpp
+    rng.cpp \
+    readers.cpp \
+    stringlib.cpp
 
 HEADERS += \
         mainwindow.h \
         field.h \
     dataset.h \
-    rng.h
+    rng.h \
+    readers.h \
+    stringlib.h
 
 FORMS += \
         mainwindow.ui
