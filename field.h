@@ -25,15 +25,15 @@ public:
 
     // get private members and infos
     unsigned int getSize();
-    std::string getName();
-    std::vector<float> getData();
+    const std::string& getName();
+    const std::vector<float>* getData();
     void print(int number=0);
     std::array<float, 2> getRange();
 
     // set private members
     void setSize(unsigned int size);
     void setName(std::string name);
-    void setData(std::vector<float> data);
+    void setData(std::vector<float>* data);
     void setValue(float value, unsigned int index);
 
     // utils

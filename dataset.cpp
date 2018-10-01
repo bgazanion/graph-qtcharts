@@ -15,7 +15,7 @@ void Dataset::setSize(unsigned int size)
 }
 
 
-void Dataset::addField(Field field)
+void Dataset::addField(Field &field)
 {
     // check that the new field has the same size as the dataset
     if (field.getSize() == m_size)
@@ -98,7 +98,6 @@ Field Dataset::getField(std::string name)
 
         index ++;
     }
-
 
     // return empty field if the requested field is not found
     std::cout << "getField: requested field not found" << std::endl;

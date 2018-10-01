@@ -2,7 +2,8 @@
 
 Field::Field()
 {
-
+    m_size = 0;
+    m_name = "";
 }
 
 
@@ -12,15 +13,15 @@ unsigned int Field::getSize()
 }
 
 
-std::string Field::getName()
+const std::string& Field::getName()
 {
     return m_name;
 }
 
 
-std::vector<float> Field::getData()
+const std::vector<float>* Field::getData()
 {
-    return m_data;
+    return &m_data;
 }
 
 
@@ -67,7 +68,7 @@ std::array<float, 2> Field::getRange()
     float max = std::numeric_limits<float>::min();;
     float min = std::numeric_limits<float>::max();;
 
-    for (float value : this->getData())
+    for (float value : *this->getData())
     {
         if (value > max)
         {
@@ -98,12 +99,12 @@ void Field::setName(std::string name)
 }
 
 
-void Field::setData(std::vector<float> data)
+void Field::setData(std::vector<float> *data)
 {
     // check input array size matches m_size
-    if (m_size == data.size())
+    if (m_size == data->size())
     {
-        m_data = data;
+        m_data = *data;
     }
     else
     {
