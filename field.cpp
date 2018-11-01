@@ -4,6 +4,7 @@ Field::Field()
 {
     m_size = 0;
     m_name = "";
+    m_data = {};
 }
 
 
