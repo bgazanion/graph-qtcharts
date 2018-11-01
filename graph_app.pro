@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui widgets
+QT       += charts
 
 TARGET = graph_app
 TEMPLATE = app
@@ -29,7 +30,9 @@ SOURCES += \
     dataset.cpp \
     rng.cpp \
     readers.cpp \
-    stringlib.cpp
+    stringlib.cpp \
+    curve.cpp \
+    curveconfigwidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -37,7 +40,9 @@ HEADERS += \
     dataset.h \
     rng.h \
     readers.h \
-    stringlib.h
+    stringlib.h \
+    curve.h \
+    curveconfigwidget.h
 
 FORMS += \
         mainwindow.ui
@@ -46,3 +51,10 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+win32:CONFIG(release, debug|release): LIBS += -LC:/Qt/5.11.1/msvc2017_64/lib/ -lQt5Charts
+else:win32:CONFIG(debug, debug|release): LIBS += -LC:/Qt/5.11.1/msvc2017_64/lib/ -lQt5Chartsd
+else:unix: LIBS += -LC:/Qt/5.11.1/msvc2017_64/lib/ -lQt5Charts
+
+INCLUDEPATH += C:/Qt/5.11.1/msvc2017_64/include
+DEPENDPATH += C:/Qt/5.11.1/msvc2017_64/include

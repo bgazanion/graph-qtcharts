@@ -1,4 +1,7 @@
 #include <QApplication>
+#include <QChart>
+#include <QChartView>
+#include <QLineSeries>
 
 #include <iostream>
 #include <vector>
@@ -10,10 +13,18 @@
 #include "rng.h"
 #include "stringlib.h"
 #include "readers.h"
+#include "curve.h"
 
+
+QT_CHARTS_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
+    /*
+    QApplication a(argc, argv);
+    MainWindow window;
+    */
+
     //-- init RNG
     initRNG();
 
@@ -26,7 +37,7 @@ int main(int argc, char *argv[])
     f2.setName("time");
     std::vector<float> v = {1, 5, 3, 8, 5, 7, 8, 54, 8, 5};
     f2.setSize(static_cast<unsigned int>(v.size()));
-    f2.setData(v);
+    f2.setData(&v);
     f2.print();
 
     Field f3;
@@ -75,15 +86,76 @@ int main(int argc, char *argv[])
     */
 
     //-- debug CSV reader
+    /*
+    std::string fileName = "D:\\Prog\\datasets\\Rdatasets\\aids_cut_nice.csv";
+    // std::string fileName = "D:\\Prog\\datasets\\Rdatasets\\cps1_short.csv";
+    Dataset data = readCSV(fileName);
+    data.printInfo();
+    */
+
+    //-- debug charts
+    /*
+    QApplication a(argc, argv);
+
+    QLineSeries *series = new QLineSeries();
+
+    series->append(0, 6);
+    series->append(2, 4);
+    series->append(3, 8);
+    series->append(7, 4);
+    series->append(10, 5);
+    *series << QPointF(11, 1) << QPointF(13, 3) << QPointF(17, 6) << QPointF(18, 3) << QPointF(20, 2);
+
+    QChart *chart = new QChart();
+    chart->legend()->hide();
+    chart->addSeries(series);
+    chart->createDefaultAxes();
+    chart->setTitle("Simple line chart example");
+
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+
+    MainWindow window;
+    window.setChart(chart);
+    window.resize(400, 300);
+    window.show();
+    */
+
+
+    //-- debug curve
+    QApplication a(argc, argv);
     std::string fileName = "D:\\Prog\\datasets\\Rdatasets\\aids_cut_nice.csv";
     Dataset data = readCSV(fileName);
     data.printInfo();
 
+    Curve *curve = new Curve(data);
+    curve->setXFieldName("\"\"");
+    curve->setYFieldName("\"delay\"");
+    curve->updateData();
 
+    QChart *chart = new QChart();
+    chart->addSeries(curve);
+    chart->createDefaultAxes();
+
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+
+    MainWindow window;
+    window.setChart(chart);
+    //window.setCentralWidget(chartView);
+    window.resize(400, 300);
+    window.show();
+    return a.exec();
+
+
+
+    /*
     QApplication a(argc, argv);
     MainWindow w;
-    // w.show();
+    w.show();
+    return a.exec();
+    */
 
-    // return a.exec();
+
 
 }
