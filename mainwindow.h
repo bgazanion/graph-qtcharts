@@ -6,6 +6,7 @@
 #include <QVBoxLayout>
 #include <QList>
 #include "curveconfigwidget.h"
+#include "datasetwidget.h"
 
 
 using namespace QtCharts;
@@ -20,9 +21,11 @@ class MainWindow : public QMainWindow
 
 private:
     Ui::MainWindow *ui;
-    QVBoxLayout *m_layout;
+    QHBoxLayout *m_layout;
+    QVBoxLayout *m_curvesLayout;
     QVBoxLayout *m_curveConfigLayout;
     QList<CurveConfigWidget*> *m_curveConfigWidgets;
+    QVBoxLayout *m_datasetsLayout;
     QChartView *m_chartWidget;
 
 public:
@@ -31,6 +34,7 @@ public:
     void setChart(QChart *chart);
     void addCurve(Curve *curve);
     void removeCurve(Curve *curve);
+    void addDataset(Dataset *dataset);
 
 
 };

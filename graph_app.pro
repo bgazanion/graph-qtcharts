@@ -32,7 +32,9 @@ SOURCES += \
     readers.cpp \
     stringlib.cpp \
     curve.cpp \
-    curveconfigwidget.cpp
+    curveconfigwidget.cpp \
+    datasetwidget.cpp \
+    datasetwidgetfielditem.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -42,7 +44,9 @@ HEADERS += \
     readers.h \
     stringlib.h \
     curve.h \
-    curveconfigwidget.h
+    curveconfigwidget.h \
+    datasetwidget.h \
+    datasetwidgetfielditem.h
 
 FORMS += \
         mainwindow.ui

@@ -6,17 +6,26 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    m_layout = new QVBoxLayout();
+
+    // curve layout
+    m_curvesLayout = new QVBoxLayout();
 
     m_curveConfigLayout = new QVBoxLayout();
-    m_layout->addLayout(m_curveConfigLayout);
+    m_curvesLayout->addLayout(m_curveConfigLayout);
 
     m_curveConfigWidgets = new QList<CurveConfigWidget*>;
 
     m_chartWidget = new QChartView();
     m_chartWidget->setRenderHint(QPainter::Antialiasing);
-    m_layout->addWidget(m_chartWidget);
+    m_curvesLayout->addWidget(m_chartWidget);
 
+    // dataset layout
+    m_datasetsLayout = new QVBoxLayout();
+
+    // global layout
+    m_layout = new QHBoxLayout();
+    m_layout->addLayout(m_datasetsLayout);
+    m_layout->addLayout(m_curvesLayout);
     ui->centralWidget->setLayout(m_layout);
 }
 
@@ -63,3 +72,13 @@ void MainWindow::removeCurve(Curve *curve)
     delete (*m_curveConfigWidgets)[curveIndex];
     m_curveConfigWidgets->removeAt(curveIndex);
 }
+
+
+void MainWindow::addDataset(Dataset *dataset)
+{
+    DatasetWidget *widget = new DatasetWidget();
+    widget->setDataset(dataset);
+    widget->update();
+    m_datasetsLayout->addWidget(widget);
+}
+

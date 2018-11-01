@@ -168,8 +168,10 @@ int main(int argc, char *argv[])
     MainWindow window;
 
     std::string fileName = "D:\\Prog\\datasets\\Rdatasets\\cps1_short.csv";
+
     Dataset data = readR(fileName);
     data.printInfo();
+    window.addDataset(&data);
 
     Curve *curve1 = new Curve(data);
     curve1->setXFieldName("age");
