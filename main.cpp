@@ -123,9 +123,9 @@ int main(int argc, char *argv[])
 
 
     //-- debug curve
-    QApplication a(argc, argv);
     //  CSV file
     /*
+    QApplication a(argc, argv);
     std::string fileName = "D:\\Prog\\datasets\\Rdatasets\\aids_cut_nice.csv";
     Dataset data = readCSV(fileName);
     data.printInfo();
@@ -135,6 +135,8 @@ int main(int argc, char *argv[])
     */
 
     //  R dataset
+    /*
+    QApplication a(argc, argv);
     std::string fileName = "D:\\Prog\\datasets\\Rdatasets\\cps1_short.csv";
     Dataset data = readR(fileName);
     data.printInfo();
@@ -157,7 +159,51 @@ int main(int argc, char *argv[])
     window.resize(400, 300);
     window.show();
     return a.exec();
+    */
 
+
+
+    //-- debug curve V2
+    QApplication a(argc, argv);
+    MainWindow window;
+
+    std::string fileName = "D:\\Prog\\datasets\\Rdatasets\\cps1_short.csv";
+    Dataset data = readR(fileName);
+    data.printInfo();
+
+    Curve *curve1 = new Curve(data);
+    curve1->setXFieldName("age");
+    curve1->setYFieldName("re75");
+    curve1->updateData();
+
+    window.addCurve(curve1);
+
+
+    Curve *curve2 = new Curve(data);
+    curve2->setXFieldName("age");
+    curve2->setYFieldName("re74");
+    curve2->updateData();
+
+    window.addCurve(curve2);
+
+    window.removeCurve(curve1);
+
+    /*
+    QChart *chart = new QChart();
+    chart->addSeries(curve);
+    chart->createDefaultAxes();
+
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+
+    MainWindow window;
+    window.setChart(chart);
+    //window.setCentralWidget(chartView);
+    */
+
+    window.resize(400, 300);
+    window.show();
+    return a.exec();
 
 
     /*

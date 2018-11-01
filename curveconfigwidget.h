@@ -20,6 +20,8 @@ class CurveConfigWidget : public QWidget
     Q_OBJECT
 private:
     Curve *m_curve;
+    int m_baseWidth;
+    int m_height;
     QHBoxLayout *m_layout;
     QLabel *m_widgetTitle;
     QPushButton *m_colorButton;
@@ -52,6 +54,7 @@ public:
     void setColor();
     void setWidth();
     void setStyle();
+    Curve* getCurve();
 
 signals:
 
