@@ -85,3 +85,46 @@ vector<string> renameDuplicates(vector<string> input)
 
     return output;
 }
+
+
+string removeQuotes(string inputStr)
+{
+    string result = inputStr;
+    string replacement = " ";
+
+    for (size_t i=0; i<inputStr.length(); ++i)
+    {
+        if ( (inputStr[i]=='\"') || (inputStr[i]=='\'') )
+            result.replace(i, replacement.size(), replacement);
+    }
+
+    return result;
+}
+
+
+string strip(string inputStr)
+{
+    char target = ' ';
+    size_t strSize = inputStr.size();
+    size_t startPos = 0;
+    size_t endPos = 0;
+    size_t currentPos;
+
+    currentPos = 0;
+    while ((inputStr[currentPos]==target) && (currentPos<strSize))
+    {
+        currentPos += 1;
+    }
+    startPos = currentPos;
+
+    currentPos = strSize;
+    while ((inputStr[currentPos-1]==target) && (currentPos>0))
+    {
+        currentPos -= 1;
+    }
+    endPos = currentPos;
+
+    string result;
+    result = inputStr.substr(startPos, endPos - startPos);
+    return result;
+}
