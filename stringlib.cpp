@@ -14,6 +14,21 @@ vector<size_t> findAll(string inputStr, char target)
 }
 
 
+vector<size_t> findAll(string inputStr, string target)
+{
+    vector<size_t> result;
+    size_t targetLen = target.size();
+
+    for (size_t i=0; i<inputStr.length(); ++i)
+    {
+        if (inputStr.substr(i, targetLen)==target)
+            result.push_back(i);
+    }
+
+    return result;
+}
+
+
 vector<string> split(string inputStr, char separator)
 {
     // vector containing the positions of the separator in the string
@@ -56,6 +71,52 @@ vector<string> split(string inputStr, char separator)
     }
 
 }
+
+
+vector<string> split(string inputStr, string separator)
+{
+    // vector containing the positions of the separator in the string
+    vector<size_t> pos = findAll(inputStr, separator);
+    size_t length = separator.size();
+
+    if (pos.empty())
+    {
+        // return the input string in a container
+        return {inputStr};
+    }
+
+    else
+    {
+        // return a vector of sub-strings
+
+        string tmpStr;
+
+        // output vector
+        vector<string> outputStr;
+
+        // first position
+        tmpStr = inputStr.substr(0, pos[0]+length-1);
+        if (!tmpStr.empty())
+            outputStr.push_back(tmpStr);
+
+        // intermediate positions
+        for (size_t i=0; i<pos.size()-1; ++i)
+        {
+            tmpStr = inputStr.substr(pos[i]+length, pos[i+1]-pos[i]+length-2);
+            if (!tmpStr.empty())
+                outputStr.push_back(tmpStr);
+        }
+
+        // last position
+        tmpStr = inputStr.substr(pos.back()+length, inputStr.size()+length-2);
+        if (!tmpStr.empty())
+            outputStr.push_back(tmpStr);
+
+        return outputStr;
+    }
+
+}
+
 
 
 vector<string> renameDuplicates(vector<string> input)
@@ -126,5 +187,18 @@ string strip(string inputStr)
 
     string result;
     result = inputStr.substr(startPos, endPos - startPos);
+    return result;
+}
+
+
+string getBaseName(string inputStr)
+{
+    // 1. split path using windows delimiter
+    vector<string> backslashSplit = split(inputStr, "\\");
+
+    // 2. split last element using UX delimiter
+    vector<string> slashSplit = split(backslashSplit.back(), "/");
+
+    string result = slashSplit.back();
     return result;
 }
