@@ -90,7 +90,12 @@ Dataset readCSV(std::string fileName)
         }
     }
 
-    // dummy output
+    // set title
+    std::string title;
+    title = getBaseName(fileName);
+    dataset.setTitle(title);
+
+    // output
     return dataset;
 }
 
@@ -199,6 +204,11 @@ Dataset readR(std::string fileName)
             lineNumber ++;
         }
     }
+
+    // set title
+    std::string title;
+    title = getBaseName(fileName);
+    dataset.setTitle(title);
 
     // dummy output
     return dataset;

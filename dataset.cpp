@@ -6,6 +6,7 @@ Dataset::Dataset()
     m_size = 0;
     m_names = {};
     m_fields = {};
+    m_title = "";
 }
 
 
@@ -66,6 +67,11 @@ void Dataset::setValue(std::string name, float value, unsigned int index)
 }
 
 
+void Dataset::setTitle(std::string title)
+{
+    m_title = title;
+}
+
 
 unsigned int Dataset::getSize()
 {
@@ -120,3 +126,8 @@ void Dataset::printInfo()
 
 }
 
+
+std::string Dataset::getTitle()
+{
+    return m_title;
+}

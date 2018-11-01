@@ -20,6 +20,8 @@ private:
     std::vector<std::string> m_names;
     // fields
     std::vector<Field> m_fields;
+    // title
+    std::string m_title;
 
 public:
     // constructor
@@ -29,6 +31,7 @@ public:
     void setSize(unsigned int size);
     void addField(Field &field);
     void setValue(std::string name, float value, unsigned int index);
+    void setTitle(std::string title);
 
     // get private members & infos
     unsigned int getSize();
@@ -36,6 +39,7 @@ public:
     std::vector<std::string> getNames();
     Field getField(std::string name);
     void printInfo();
+    std::string getTitle();
 
 };
 
