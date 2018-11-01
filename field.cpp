@@ -144,3 +144,32 @@ void Field::randomize(float min, float max)
 }
 
 
+std::vector<unsigned int> Field::getOrderedIndices()
+{
+    std::vector<float> sortedData = m_data;
+    std::vector<unsigned int> sortedIndex;
+    sortedIndex.resize(m_size);
+    for (unsigned int i=0; i<m_size; ++i)
+        sortedIndex[i] = i;
+
+    unsigned int minIndex;
+    for (unsigned int i=0; i<m_size; ++i)
+    {
+        minIndex = i;
+
+        // find index of min value in [index, ...]
+        for (unsigned int index=i; index<m_size; ++index)
+        {
+            if (sortedData[index]<sortedData[minIndex])
+            {
+                minIndex = index;
+            }
+        }
+
+        // swap values at pos. i and minIndex for sortedData and sortedIndex
+        std::swap(sortedData[i], sortedData[minIndex]);
+        std::swap(sortedIndex[i], sortedIndex[minIndex]);
+    }
+
+    return sortedIndex;
+}

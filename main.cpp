@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
     data.printInfo();
     Curve *curve = new Curve(data);
     curve->setXFieldName("age");
-    curve->setYFieldName("re74");
+    curve->setYFieldName("re75");
 
     curve->updateData();
 

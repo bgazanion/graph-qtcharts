@@ -6,6 +6,7 @@
 #include <array>
 #include <iostream>
 #include <limits>
+#include <algorithm>
 
 #include "rng.h"
 
@@ -38,6 +39,7 @@ public:
 
     // utils
     void randomize(float min, float max);
+    std::vector<unsigned int> getOrderedIndices();
 };
 
 #endif // FIELD_H

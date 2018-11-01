@@ -89,12 +89,16 @@ void Curve::updateData()
     vector<float> yData;
     yData = *(m_dataset.getField(m_yFieldName).getData());
 
-    double x, y = 0;
+    vector<unsigned int> sortedIndices;
+    sortedIndices= m_dataset.getField(m_xFieldName).getOrderedIndices();
 
+    double x, y = 0;
+    unsigned int index;
     for(unsigned int i=0; i<size; ++i)
     {
-        x = static_cast<double>(xData[i]);
-        y = static_cast<double>(yData[i]);
+        index = sortedIndices[i];
+        x = static_cast<double>(xData[index]);
+        y = static_cast<double>(yData[index]);
         this->append(x, y);
     }
 }
