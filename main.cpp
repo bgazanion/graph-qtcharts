@@ -124,13 +124,24 @@ int main(int argc, char *argv[])
 
     //-- debug curve
     QApplication a(argc, argv);
+    //  CSV file
+    /*
     std::string fileName = "D:\\Prog\\datasets\\Rdatasets\\aids_cut_nice.csv";
     Dataset data = readCSV(fileName);
     data.printInfo();
-
     Curve *curve = new Curve(data);
     curve->setXFieldName("\"\"");
     curve->setYFieldName("\"delay\"");
+    */
+
+    //  R dataset
+    std::string fileName = "D:\\Prog\\datasets\\Rdatasets\\cps1_short.csv";
+    Dataset data = readR(fileName);
+    data.printInfo();
+    Curve *curve = new Curve(data);
+    curve->setXFieldName("age");
+    curve->setYFieldName("re74");
+
     curve->updateData();
 
     QChart *chart = new QChart();
