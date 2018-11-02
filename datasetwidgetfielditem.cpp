@@ -1,11 +1,16 @@
 #include "datasetwidgetfielditem.h"
 
-DatasetWidgetFieldItem::DatasetWidgetFieldItem(QWidget *parent) : QWidget(parent)
+DatasetWidgetFieldItem::DatasetWidgetFieldItem(QFrame *parent) : QFrame(parent)
 {
     m_fieldNumber = 0;
     m_fieldName = "";
 
     m_layout = new QHBoxLayout;
+    m_layout->setContentsMargins(5, 0, 5, 0);
+    m_layout->setSpacing(10);
+    // this->setFrameStyle(QFrame::Plain);
+    // this->setStyleSheet("border:1px solid rgb(0, 0, 0); background: solid rgb(100, 100, 100);");
+    this->setStyleSheet("background: solid rgb(220, 220, 220);");
     this->setLayout(m_layout);
 
     m_numberLabel = new QLabel;
@@ -51,4 +56,18 @@ void DatasetWidgetFieldItem::setFieldName(string name)
 {
     m_fieldName = name;
     m_nameLabel->setText(QString::fromStdString(m_fieldName));
+}
+
+
+void DatasetWidgetFieldItem::setNameLabelWidth(int length)
+{
+    m_nameLabel->setMaximumWidth(length);
+    m_nameLabel->setMinimumWidth(length);
+}
+
+
+int DatasetWidgetFieldItem::getNameLabelWidth()
+{
+    // return m_nameLabel->geometry().width();
+    return m_nameLabel->fontMetrics().boundingRect(m_nameLabel->text()).width();
 }

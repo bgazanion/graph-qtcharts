@@ -1,7 +1,7 @@
 #ifndef DATASETWIDGETFIELDITEM_H
 #define DATASETWIDGETFIELDITEM_H
 
-#include <QWidget>
+#include <QFrame>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QToolButton>
@@ -10,7 +10,7 @@
 
 using namespace std;
 
-class DatasetWidgetFieldItem : public QWidget
+class DatasetWidgetFieldItem : public QFrame
 {
     Q_OBJECT
 
@@ -24,10 +24,12 @@ private:
     int m_fieldNumber;
 
 public:
-    explicit DatasetWidgetFieldItem(QWidget *parent = nullptr);
+    explicit DatasetWidgetFieldItem(QFrame *parent = nullptr);
     void plot();
     void setFieldNumber(int number);
     void setFieldName(string name);
+    void setNameLabelWidth(int length);
+    int getNameLabelWidth();
 
 signals:
 

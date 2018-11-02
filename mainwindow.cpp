@@ -19,8 +19,12 @@ MainWindow::MainWindow(QWidget *parent) :
     m_chartWidget->setRenderHint(QPainter::Antialiasing);
     m_curvesLayout->addWidget(m_chartWidget);
 
-    // dataset layout
+    // dataset frame
     m_datasetsLayout = new QVBoxLayout();
+
+    m_datasetsInnerLayout = new QVBoxLayout();
+    m_datasetsLayout->addLayout(m_datasetsInnerLayout);
+    m_datasetsLayout->addStretch();
 
     // global layout
     m_layout = new QHBoxLayout();
@@ -79,6 +83,6 @@ void MainWindow::addDataset(Dataset *dataset)
     DatasetWidget *widget = new DatasetWidget();
     widget->setDataset(dataset);
     widget->update();
-    m_datasetsLayout->addWidget(widget);
+    m_datasetsInnerLayout->addWidget(widget);
 }
 

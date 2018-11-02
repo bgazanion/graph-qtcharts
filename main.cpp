@@ -167,28 +167,25 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow window;
 
-    std::string fileName = "D:\\Prog\\datasets\\Rdatasets\\cps1_short.csv";
+    std::string fileName1 = "D:\\Prog\\datasets\\Rdatasets\\cps1_short.csv";
+    Dataset data1 = readR(fileName1);
+    window.addDataset(&data1);
 
-    Dataset data = readR(fileName);
-    data.printInfo();
-    window.addDataset(&data);
-
-    Curve *curve1 = new Curve(data);
+    Curve *curve1 = new Curve(data1);
     curve1->setXFieldName("age");
     curve1->setYFieldName("re75");
     curve1->updateData();
-
     window.addCurve(curve1);
 
-
-    Curve *curve2 = new Curve(data);
+    Curve *curve2 = new Curve(data1);
     curve2->setXFieldName("age");
     curve2->setYFieldName("re74");
     curve2->updateData();
-
     window.addCurve(curve2);
 
-    window.removeCurve(curve1);
+    std::string fileName2 = "D:\\Prog\\datasets\\Rdatasets\\cps1_short_modif.csv";
+    Dataset data2 = readR(fileName2);
+    window.addDataset(&data2);
 
     /*
     QChart *chart = new QChart();

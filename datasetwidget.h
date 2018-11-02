@@ -23,6 +23,7 @@ class DatasetWidget : public QWidget
 
 private:
     // non GUI
+    int m_width;
     Dataset *m_dataset;
     QList<DatasetWidgetFieldItem*> *m_fieldItems;
     // fixed GUI elements
@@ -32,7 +33,7 @@ private:
     QToolButton *m_showButton;
     // field details
     QWidget *m_detailWidget;
-    QGridLayout *m_fieldsLayout;
+    QVBoxLayout *m_fieldsLayout;
     QHBoxLayout *m_subLayout;
 
 public:

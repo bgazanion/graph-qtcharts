@@ -3,6 +3,7 @@
 DatasetWidget::DatasetWidget(QWidget *parent) : QWidget(parent)
 {
     // non GUI members
+    m_width = 300;
     m_dataset = new Dataset();
     m_fieldItems = new QList<DatasetWidgetFieldItem*>;
 
@@ -23,8 +24,10 @@ DatasetWidget::DatasetWidget(QWidget *parent) : QWidget(parent)
     m_subLayout = new QHBoxLayout();
     m_subLayout->addSpacing(20);
 
-    m_fieldsLayout = new QGridLayout();
+    m_fieldsLayout = new QVBoxLayout();
     m_subLayout->addLayout(m_fieldsLayout);
+
+    m_subLayout->addStretch(0);
 
     m_detailWidget = new QWidget();
     m_detailWidget->setLayout(m_subLayout);
@@ -32,8 +35,11 @@ DatasetWidget::DatasetWidget(QWidget *parent) : QWidget(parent)
     // GUI main
     m_layout = new QVBoxLayout();
     this->setLayout(m_layout);
+    this->setMinimumWidth(m_width);
+    this->setMaximumWidth(m_width);
     m_layout->addLayout(m_titleLayout);
     m_layout->addWidget(m_detailWidget);
+    // m_layout->addStretch(0);
 }
 
 
@@ -64,6 +70,20 @@ void DatasetWidget::update()
         // add field item in structures (layout & list)
         m_fieldItems->append(fieldItem);
         m_fieldsLayout->addWidget(fieldItem);
+    }
+
+    // update size of widgets name labels
+    int maxNameLabelSize = 0;
+    int nameLabelSize;
+    for (DatasetWidgetFieldItem* widget : *m_fieldItems)
+    {
+        nameLabelSize = widget->getNameLabelWidth();
+        if (nameLabelSize > maxNameLabelSize)
+            maxNameLabelSize = nameLabelSize;
+    }
+    for (DatasetWidgetFieldItem* widget : *m_fieldItems)
+    {
+        widget->setNameLabelWidth(maxNameLabelSize);
     }
 }
 

@@ -26,6 +26,7 @@ private:
     QVBoxLayout *m_curveConfigLayout;
     QList<CurveConfigWidget*> *m_curveConfigWidgets;
     QVBoxLayout *m_datasetsLayout;
+    QVBoxLayout *m_datasetsInnerLayout;
     QChartView *m_chartWidget;
 
 public:
