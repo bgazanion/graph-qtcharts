@@ -34,7 +34,9 @@ SOURCES += \
     curve.cpp \
     curveconfigwidget.cpp \
     datasetwidget.cpp \
-    datasetwidgetfielditem.cpp
+    datasetwidgetfielditem.cpp \
+    chartconfigwidget.cpp \
+    panel.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -46,7 +48,9 @@ HEADERS += \
     curve.h \
     curveconfigwidget.h \
     datasetwidget.h \
-    datasetwidgetfielditem.h
+    datasetwidgetfielditem.h \
+    chartconfigwidget.h \
+    panel.h
 
 FORMS += \
         mainwindow.ui
