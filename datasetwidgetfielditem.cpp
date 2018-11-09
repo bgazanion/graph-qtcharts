@@ -3,7 +3,8 @@
 DatasetWidgetFieldItem::DatasetWidgetFieldItem(QFrame *parent) : QFrame(parent)
 {
     m_fieldNumber = 0;
-    m_fieldName = "";
+    m_fieldName = new string();
+    m_fieldName->assign("");
 
     m_layout = new QHBoxLayout;
     m_layout->setContentsMargins(5, 0, 5, 0);
@@ -23,11 +24,12 @@ DatasetWidgetFieldItem::DatasetWidgetFieldItem(QFrame *parent) : QFrame(parent)
     m_plotLabel->setText("plot");
     m_layout->addWidget(m_plotLabel);
 
-    m_plotButton = new QToolButton;
+    // m_plotButton = new QToolButton;
+    m_plotButton = new CurvePlotButton();
     m_plotButton->setArrowType(Qt::ArrowType::NoArrow);
     m_plotButton->setCheckable(true);
     m_plotButton->setChecked(false);
-    connect(m_plotButton, &QToolButton::clicked, this, &DatasetWidgetFieldItem::plot);
+    // connect(m_plotButton, &QToolButton::clicked, this, &DatasetWidgetFieldItem::plot);
     m_layout->addWidget(m_plotButton);
 }
 
@@ -54,8 +56,8 @@ void DatasetWidgetFieldItem::setFieldNumber(int number)
 
 void DatasetWidgetFieldItem::setFieldName(string name)
 {
-    m_fieldName = name;
-    m_nameLabel->setText(QString::fromStdString(m_fieldName));
+    m_fieldName->assign(name);
+    m_nameLabel->setText(QString::fromStdString(name));
 }
 
 
@@ -70,4 +72,17 @@ int DatasetWidgetFieldItem::getNameLabelWidth()
 {
     // return m_nameLabel->geometry().width();
     return m_nameLabel->fontMetrics().boundingRect(m_nameLabel->text()).width();
+}
+
+
+// QToolButton* DatasetWidgetFieldItem::getButton()
+CurvePlotButton* DatasetWidgetFieldItem::getButton()
+{
+    return m_plotButton;
+}
+
+
+string* DatasetWidgetFieldItem::getName()
+{
+    return m_fieldName;
 }

@@ -17,6 +17,22 @@ ChartConfigWidget::ChartConfigWidget(QWidget *parent) : QWidget(parent)
     m_titleLayout->addWidget(m_titleLabel);
     m_titleLayout->addWidget(m_titleField);
 
+
+    //------------------------------------------------
+    // X field
+    //------------------------------------------------
+
+    // data
+    m_xName = new string();
+
+    //  -> Label
+    m_xNameLabel = new QLabel();
+    m_xNameLabel->setText("X field");
+
+    // -> selector
+    m_xNameBox = new QComboBox();
+
+
     //------------------------------------------------
     // X axis
     //------------------------------------------------
@@ -448,4 +464,11 @@ void ChartConfigWidget::setYGrid()
         m_chartView->chart()->axisY()->setGridLineVisible(true);
     else
         m_chartView->chart()->axisY()->setGridLineVisible(false);
+}
+
+
+string* ChartConfigWidget::getXName()
+{
+    return m_xName;
+
 }

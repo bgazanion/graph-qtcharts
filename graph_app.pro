@@ -36,7 +36,8 @@ SOURCES += \
     datasetwidget.cpp \
     datasetwidgetfielditem.cpp \
     chartconfigwidget.cpp \
-    panel.cpp
+    panel.cpp \
+    curveplotbutton.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -50,7 +51,8 @@ HEADERS += \
     datasetwidget.h \
     datasetwidgetfielditem.h \
     chartconfigwidget.h \
-    panel.h
+    panel.h \
+    curveplotbutton.h
 
 FORMS += \
         mainwindow.ui

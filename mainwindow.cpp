@@ -116,11 +116,55 @@ void MainWindow::removeCurve(Curve *curve)
 }
 
 
+void MainWindow::addCurveFromUI(Dataset *dataset, string *xName, string *yName)
+{
+    // create curve
+    /*
+    Curve *curve = new Curve();
+    curve->setDataset(*dataset);
+    curve->setXFieldName(xName);
+    curve->setYFieldName(yName);
+    curve->updateData();
+
+    // add curve to chart
+    QChart *chart = m_chartWidget->chart();
+    chart->addSeries(curve);
+    chart->createDefaultAxes();
+    m_chartConfigWidget->setXGrid();
+    m_chartConfigWidget->setYGrid();
+
+    // create curve widget
+    CurveConfigWidget *configWidget = new CurveConfigWidget();
+    configWidget->setCurve(curve);
+    m_curveConfigWidgets->append(configWidget);
+    m_curvesListLayout->addWidget(configWidget);
+    */
+    cout << "addCurveFromUI(Dataset*, string, string)" << endl;
+    cout << dataset->getTitle() << endl;
+    cout << *xName << endl;
+    cout << *yName << endl;
+}
+
+
 void MainWindow::addDataset(Dataset *dataset)
 {
     DatasetWidget *widget = new DatasetWidget();
     widget->setDataset(dataset);
     widget->update();
     m_datasetsInnerLayout->addWidget(widget);
+
+    // build connection for field items display button
+    for (DatasetWidgetFieldItem* fieldItem : *widget->getFieldItems())
+    {
+        // pass infos to button
+        fieldItem->getButton()->setDataset(dataset);
+        fieldItem->getButton()->setXName(m_chartConfigWidget->getXName());
+        fieldItem->getButton()->setYName(fieldItem->getName());
+
+        connect(fieldItem->getButton(),
+                SIGNAL(buttonClicked(Dataset*, string*, string*)),
+                this,
+                SLOT(addCurveFromUI(Dataset*, string*, string*)));
+    }
 }
 

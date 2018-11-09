@@ -6,13 +6,18 @@
 #include <QVBoxLayout>
 #include <QList>
 #include <QFrame>
+#include <string>
+#include <QSignalMapper>
 #include "curveconfigwidget.h"
 #include "datasetwidget.h"
 #include "chartconfigwidget.h"
 #include "panel.h"
+#include "curveplotbutton.h"
+#include <iostream>
 
 
 using namespace QtCharts;
+using namespace std;
 
 namespace Ui {
 class MainWindow;
@@ -50,7 +55,10 @@ public:
     void removeCurve(Curve *curve);
     void addDataset(Dataset *dataset);
 
+signals:
 
+private slots:
+    void addCurveFromUI(Dataset *dataset, string *xName, string *yName);
 };
 
 #endif // MAINWINDOW_H

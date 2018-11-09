@@ -41,6 +41,7 @@ public:
     void setDataset(Dataset *dataset);
     void update();
     void showHide();
+    QList<DatasetWidgetFieldItem*>* getFieldItems();
 
 signals:
 

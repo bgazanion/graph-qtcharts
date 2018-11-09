@@ -101,3 +101,9 @@ void DatasetWidget::showHide()
         m_detailWidget->show();
     }
 }
+
+
+QList<DatasetWidgetFieldItem*>* DatasetWidget::getFieldItems()
+{
+    return m_fieldItems;
+}

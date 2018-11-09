@@ -18,6 +18,7 @@
 #include <QAbstractSeries>
 #include <QComboBox>
 #include <QList>
+#include <string>
 
 
 using namespace QtCharts;
@@ -35,6 +36,11 @@ private:
     QLabel *m_titleLabel;
     QLineEdit *m_titleField;
     QHBoxLayout *m_titleLayout;
+
+    // X field
+    string *m_xName;
+    QLabel *m_xNameLabel;
+    QComboBox *m_xNameBox;
 
     // X axis
     //  -> general
@@ -105,6 +111,8 @@ public:
     void setYRange();
     void updateYScale();
     void setYGrid();
+    // data
+    string* getXName();
 
 signals:
 

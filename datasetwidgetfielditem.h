@@ -7,6 +7,7 @@
 #include <QToolButton>
 #include <QString>
 #include <string>
+#include "curveplotbutton.h"
 
 using namespace std;
 
@@ -19,8 +20,9 @@ private:
     QLabel *m_numberLabel;
     QLabel *m_nameLabel;
     QLabel *m_plotLabel;
-    QToolButton *m_plotButton;
-    string m_fieldName;
+    // QToolButton *m_plotButton;
+    CurvePlotButton *m_plotButton;
+    string* m_fieldName;
     int m_fieldNumber;
 
 public:
@@ -30,6 +32,9 @@ public:
     void setFieldName(string name);
     void setNameLabelWidth(int length);
     int getNameLabelWidth();
+    string* getName();
+    // QToolButton* getButton();
+    CurvePlotButton* getButton();
 
 signals:
 
