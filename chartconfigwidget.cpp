@@ -22,15 +22,19 @@ ChartConfigWidget::ChartConfigWidget(QWidget *parent) : QWidget(parent)
     // X field
     //------------------------------------------------
 
-    // data
     m_xName = new string();
 
-    //  -> Label
     m_xNameLabel = new QLabel();
     m_xNameLabel->setText("X field");
 
-    // -> selector
     m_xNameBox = new QComboBox();
+    connect(m_xNameBox, &QComboBox::currentTextChanged,
+            this, &ChartConfigWidget::updateXFieldName);
+
+    m_xNameLayout = new QHBoxLayout();
+    m_xNameLayout->addWidget(m_xNameLabel);
+    m_xNameLayout->addWidget(m_xNameBox);
+    m_xNameLayout->addStretch();
 
 
     //------------------------------------------------
@@ -212,6 +216,7 @@ ChartConfigWidget::ChartConfigWidget(QWidget *parent) : QWidget(parent)
     // layout
     m_layout = new QVBoxLayout();
     m_layout->addLayout(m_titleLayout);
+    m_layout->addLayout(m_xNameLayout);
     m_layout->addLayout(m_xMainLayout);
     m_layout->addLayout(m_yMainLayout);
     m_layout->addStretch(0);
@@ -290,6 +295,23 @@ void ChartConfigWidget::setChartView(QChartView *chartView)
     m_chartView = chartView;
 }
 
+
+
+void ChartConfigWidget::updateXFields(QList<string> list)
+{
+    m_xNameBox->clear();
+    for (string element : list)
+    {
+        m_xNameBox->addItem(QString::fromStdString(element));
+    }
+
+}
+
+
+void ChartConfigWidget::updateXFieldName()
+{
+    m_xName->assign(m_xNameBox->currentText().toStdString());
+}
 
 
 void ChartConfigWidget::showHideX()

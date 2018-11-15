@@ -41,6 +41,7 @@ private:
     string *m_xName;
     QLabel *m_xNameLabel;
     QComboBox *m_xNameBox;
+    QHBoxLayout *m_xNameLayout;
 
     // X axis
     //  -> general
@@ -101,6 +102,9 @@ public:
     explicit ChartConfigWidget(QWidget *parent = nullptr);
     ~ChartConfigWidget();
     void setChartView(QChartView *chartView);
+    void updateXFieldName();
+    // X field
+    void updateXFields(QList<string> list);
     // X
     void showHideX();
     void setXRange();

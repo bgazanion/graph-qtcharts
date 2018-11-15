@@ -7,6 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    m_datasetsList = {};
+
     // curves config
     m_curvesListLayout = new QVBoxLayout();
 
@@ -116,15 +118,17 @@ void MainWindow::removeCurve(Curve *curve)
 }
 
 
-void MainWindow::addCurveFromUI(Dataset *dataset, string *xName, string *yName)
+void MainWindow::addCurveFromUI(CurvePlotButton *curvePlotButton)
 {
     // create curve
-    /*
     Curve *curve = new Curve();
-    curve->setDataset(*dataset);
-    curve->setXFieldName(xName);
-    curve->setYFieldName(yName);
+    curve->setDataset( *(curvePlotButton->getDataset()) );
+    curve->setXFieldName( *(curvePlotButton->getXName()) );
+    curve->setYFieldName( *(curvePlotButton->getYName()) );
     curve->updateData();
+
+    // add curve to button structure
+    curvePlotButton->setCurve(curve);
 
     // add curve to chart
     QChart *chart = m_chartWidget->chart();
@@ -138,11 +142,25 @@ void MainWindow::addCurveFromUI(Dataset *dataset, string *xName, string *yName)
     configWidget->setCurve(curve);
     m_curveConfigWidgets->append(configWidget);
     m_curvesListLayout->addWidget(configWidget);
-    */
-    cout << "addCurveFromUI(Dataset*, string, string)" << endl;
-    cout << dataset->getTitle() << endl;
-    cout << *xName << endl;
-    cout << *yName << endl;
+
+    // add curve widget to button structure
+    curvePlotButton->setCurveConfigWidget(configWidget);
+}
+
+
+void MainWindow::removeCurveFromUI(CurvePlotButton *curvePlotButton)
+{
+    // remove curve from chart
+    QChart *chart = m_chartWidget->chart();
+    chart->removeSeries(curvePlotButton->getCurve());
+
+    // delete curve config widget
+    delete curvePlotButton->getCurveConfigWidget();
+    curvePlotButton->removeCurveConfigWidget();
+
+    // delete curve
+    delete curvePlotButton->getCurve();
+    curvePlotButton->removeCurve();
 }
 
 
@@ -162,9 +180,50 @@ void MainWindow::addDataset(Dataset *dataset)
         fieldItem->getButton()->setYName(fieldItem->getName());
 
         connect(fieldItem->getButton(),
-                SIGNAL(buttonClicked(Dataset*, string*, string*)),
+                SIGNAL(buttonClicked(CurvePlotButton*)),
                 this,
-                SLOT(addCurveFromUI(Dataset*, string*, string*)));
+                SLOT(showHideCurve(CurvePlotButton*)));
     }
+
+    // add dataset to private list
+    m_datasetsList.append(dataset);
+
+    // update list of fields
+    m_chartConfigWidget->updateXFields(listFields());
 }
 
+
+QList<string> MainWindow::listFields()
+{
+    QList<string> output;
+    for (Dataset* dataset : m_datasetsList)
+    {
+        for (string name : dataset->getNames())
+        {
+            output.append(name);
+        }
+    }
+
+    return output;
+}
+
+
+void MainWindow::showHideCurve(CurvePlotButton *curvePlotButton)
+{
+    if (curvePlotButton->isChecked())
+    {
+        // update button icon
+        curvePlotButton->setArrowType(Qt::ArrowType::RightArrow);
+
+        // plot curve
+        addCurveFromUI(curvePlotButton);
+    }
+    else
+    {
+        // update button icon
+        curvePlotButton->setArrowType(Qt::ArrowType::NoArrow);
+
+        // remove curve
+        removeCurveFromUI(curvePlotButton);
+    }
+}
