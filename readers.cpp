@@ -1,8 +1,14 @@
 #include "readers.h"
 
 // CSV files
-Dataset readCSV(std::string fileName)
+Dataset* readCSV(std::string fileName)
 {
+    // create dataset
+    Dataset *dataset = new Dataset();
+
+    // message window
+    MessageWindow *messageWindow = new MessageWindow();
+
     // open the file
     std::ifstream input(fileName, std::ifstream::in);
     //input.clear();
@@ -10,8 +16,10 @@ Dataset readCSV(std::string fileName)
     if (!input)
     {
         // error
-        std::cerr << "readCSV: cannot open file " << fileName << std::endl;
-        return Dataset();
+        messageWindow->printError("CSV Reader",
+                                  "Cannot open file",
+                                  fileName);
+        return nullptr;
     }
 
 
@@ -46,10 +54,16 @@ Dataset readCSV(std::string fileName)
     // process header to get fields names
     std::vector<std::string> initHeaderFields = split(headerStr, ',');
     std::vector<std::string> headerFields = renameDuplicates(initHeaderFields);
+    std::cout << "'" << headerStr << "'" << std::endl;
+    for (unsigned int i=0; i<headerFields.size(); ++i)
+    {
+        std::cout << headerFields[i] << "   " << i << std::endl;
+        headerFields[i] = strip(removeQuotes(headerFields[i]));
+    }
 
     // create fields and dataset
-    Dataset dataset;
-    dataset.setSize(nbLines);
+    unsigned int nbFields = 0;
+    dataset->setSize(nbLines);
 
     for (std::string str : headerFields)
     {
@@ -57,7 +71,8 @@ Dataset readCSV(std::string fileName)
         newField.setSize(nbLines);
         newField.setName(str);
 
-        dataset.addField(newField);
+        dataset->addField(newField);
+        nbFields ++;
     }
 
     // go back to header and skip header
@@ -79,10 +94,28 @@ Dataset readCSV(std::string fileName)
         {
             // split the line and store pieces in the corresponding fields
             splitStr = split(tmpStr, ',');
+
+            if (splitStr.size() != nbFields)
+            {
+                messageWindow->printError("CSV Reader",
+                                          "Wrong number of columns");
+                return nullptr;
+            }
+
             for (unsigned int i=0; i<splitStr.size(); ++i)
             {
-                value = std::stof(splitStr[i]);
-                dataset.setValue(headerFields[i], value, lineNumber);
+                try
+                {
+                    value = std::stof(splitStr[i]);
+                }
+                catch (invalid_argument)
+                {
+                    messageWindow->printError("CSV Reader",
+                                              "Cannot convert line data",
+                                              splitStr[i]);
+                    return nullptr;
+                }
+                dataset->setValue(headerFields[i], value, lineNumber);
             }
 
             // increment line number
@@ -93,7 +126,7 @@ Dataset readCSV(std::string fileName)
     // set title
     std::string title;
     title = getBaseName(fileName);
-    dataset.setTitle(title);
+    dataset->setTitle(title);
 
     // output
     return dataset;
@@ -102,8 +135,14 @@ Dataset readCSV(std::string fileName)
 
 
 // R files
-Dataset readR(std::string fileName)
+Dataset* readR(std::string fileName)
 {
+    // create dataset
+    Dataset *dataset = new Dataset();
+
+    // message window
+    MessageWindow *messageWindow = new MessageWindow();
+
     // open the file
     std::ifstream input(fileName, std::ifstream::in);
     //input.clear();
@@ -111,8 +150,10 @@ Dataset readR(std::string fileName)
     if (!input)
     {
         // error
-        std::cerr << "readR: cannot open file " << fileName << std::endl;
-        return Dataset();
+        messageWindow->printError("R Reader",
+                                  "Cannot open file",
+                                  fileName);
+        return nullptr;
     }
 
 
@@ -163,8 +204,8 @@ Dataset readR(std::string fileName)
     }
 
     // create fields and dataset
-    Dataset dataset;
-    dataset.setSize(nbLines);
+    unsigned int nbFields = 0;
+    dataset->setSize(nbLines);
 
     for (std::string str : headerFields)
     {
@@ -172,7 +213,8 @@ Dataset readR(std::string fileName)
         newField.setSize(nbLines);
         newField.setName(str);
 
-        dataset.addField(newField);
+        dataset->addField(newField);
+        nbFields ++;
     }
 
     // go back to header and skip header
@@ -194,10 +236,28 @@ Dataset readR(std::string fileName)
         {
             // split the line and store pieces in the corresponding fields
             splitStr = split(tmpStr, ',');
+
+            if (splitStr.size() != nbFields+1)
+            {
+                messageWindow->printError("R Reader",
+                                          "Wrong number of columns");
+                return nullptr;
+            }
+
             for (unsigned int i=indexStart; i<splitStr.size(); ++i)
             {
-                value = std::stof(splitStr[i]);
-                dataset.setValue(headerFields[i-indexOffset], value, lineNumber);
+                try
+                {
+                    value = std::stof(splitStr[i]);
+                }
+                catch (invalid_argument)
+                {
+                    messageWindow->printError("R Reader",
+                                              "Cannot convert line data",
+                                              splitStr[i]);
+                    return nullptr;
+                }
+                dataset->setValue(headerFields[i-indexOffset], value, lineNumber);
             }
 
             // increment line number
@@ -208,7 +268,7 @@ Dataset readR(std::string fileName)
     // set title
     std::string title;
     title = getBaseName(fileName);
-    dataset.setTitle(title);
+    dataset->setTitle(title);
 
     // dummy output
     return dataset;

@@ -70,6 +70,17 @@ MainWindow::MainWindow(QWidget *parent) :
     m_layout->addLayout(m_curvesLayout);
     m_layout->addWidget(m_chartConfigPanel);
     ui->centralWidget->setLayout(m_layout);
+
+    // Menu
+    m_importCSVAction = new QAction("Import CSV dataset", this);
+    connect(m_importCSVAction, &QAction::triggered, this, &MainWindow::importCSV);
+
+    m_importRAction = new QAction("Import R dataset", this);
+    connect(m_importRAction, &QAction::triggered, this, &MainWindow::importR);
+
+    m_importMenu = menuBar()->addMenu("Import");
+    m_importMenu->addAction(m_importCSVAction);
+    m_importMenu->addAction(m_importRAction);
 }
 
 
@@ -193,6 +204,36 @@ void MainWindow::addDataset(Dataset *dataset)
 }
 
 
+
+void MainWindow::addDatasetFromUI(Dataset *dataset)
+{
+    DatasetWidget *widget = new DatasetWidget();
+    widget->setDataset(dataset);
+    widget->update();
+    m_datasetsInnerLayout->addWidget(widget);
+
+    // build connection for field items display button
+    for (DatasetWidgetFieldItem* fieldItem : *widget->getFieldItems())
+    {
+        // pass infos to button
+        fieldItem->getButton()->setDataset(dataset);
+        fieldItem->getButton()->setXName(m_chartConfigWidget->getXName());
+        fieldItem->getButton()->setYName(fieldItem->getName());
+
+        connect(fieldItem->getButton(),
+                SIGNAL(buttonClicked(CurvePlotButton*)),
+                this,
+                SLOT(showHideCurve(CurvePlotButton*)));
+    }
+
+    // add dataset to private list
+    m_datasetsList.append(dataset);
+
+    // update list of fields
+    m_chartConfigWidget->updateXFields(listFields());
+}
+
+
 QList<string> MainWindow::listFields()
 {
     QList<string> output;
@@ -225,5 +266,31 @@ void MainWindow::showHideCurve(CurvePlotButton *curvePlotButton)
 
         // remove curve
         removeCurveFromUI(curvePlotButton);
+    }
+}
+
+
+void MainWindow::importCSV()
+{
+    // open file dialog
+    QFileDialog dialog;
+    string fileName = dialog.getOpenFileName().toStdString();
+    Dataset *dataset = readCSV(fileName);
+    if (dataset != nullptr)
+    {
+        addDataset(dataset);
+    }
+}
+
+
+void MainWindow::importR()
+{
+    // open file dialog
+    QFileDialog dialog;
+    string fileName = dialog.getOpenFileName().toStdString();
+    Dataset *dataset = readR(fileName);
+    if (dataset != nullptr)
+    {
+        addDataset(dataset);
     }
 }

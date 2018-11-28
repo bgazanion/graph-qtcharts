@@ -8,11 +8,14 @@
 #include <QFrame>
 #include <string>
 #include <QSignalMapper>
+#include <QMenu>
+#include <QAction>
 #include "curveconfigwidget.h"
 #include "datasetwidget.h"
 #include "chartconfigwidget.h"
 #include "panel.h"
 #include "curveplotbutton.h"
+#include "importwindow.h"
 #include <iostream>
 
 
@@ -47,6 +50,10 @@ private:
     // chart configuration
     ChartConfigWidget *m_chartConfigWidget;
     Panel *m_chartConfigPanel;
+    // menu
+    QMenu *m_importMenu;
+    QAction *m_importCSVAction;
+    QAction *m_importRAction;
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
@@ -58,11 +65,14 @@ public:
     void addCurveFromUI(CurvePlotButton *curvePlotButton);
     void removeCurveFromUI(CurvePlotButton *curvePlotButton);
     QList<string> listFields();
+    void importCSV();
+    void importR();
 
 signals:
 
 private slots:
     void showHideCurve(CurvePlotButton *button);
+    void addDatasetFromUI(Dataset *dataset);
 };
 
 #endif // MAINWINDOW_H
