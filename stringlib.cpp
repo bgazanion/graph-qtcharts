@@ -153,6 +153,11 @@ string removeQuotes(string inputStr)
     string result = inputStr;
     string replacement = " ";
 
+    if ( (inputStr == "\"\"") || (inputStr == "''") )
+    {
+        return "";
+    }
+
     for (size_t i=0; i<inputStr.length(); ++i)
     {
         if ( (inputStr[i]=='\"') || (inputStr[i]=='\'') )
@@ -167,23 +172,35 @@ string strip(string inputStr)
 {
     char target = ' ';
     size_t strSize = inputStr.size();
+
     size_t startPos = 0;
-    size_t endPos = 0;
+    size_t endPos = strSize;
     size_t currentPos;
 
-    currentPos = 0;
-    while ((inputStr[currentPos]==target) && (currentPos<strSize))
+    if (strSize==0)
     {
-        currentPos += 1;
+        return "";
     }
-    startPos = currentPos;
+
+    currentPos = 0;
+    if (inputStr[currentPos]==target)
+    {
+        while ((inputStr[currentPos]==target) && (currentPos<strSize))
+        {
+            currentPos += 1;
+        }
+        startPos = currentPos;
+    }
 
     currentPos = strSize;
-    while ((inputStr[currentPos-1]==target) && (currentPos>0))
+    if (inputStr[currentPos]==target)
     {
-        currentPos -= 1;
+        while ((inputStr[currentPos-1]==target) && (currentPos>1))
+        {
+            currentPos -= 1;
+        }
+        endPos = currentPos;
     }
-    endPos = currentPos;
 
     string result;
     result = inputStr.substr(startPos, endPos - startPos);
