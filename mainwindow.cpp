@@ -7,8 +7,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_datasetsList = {};
-
     // curves config
     m_curvesListLayout = new QVBoxLayout();
 
@@ -42,6 +40,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     // dataset frame
+    m_datasetsList = {};
+    m_datasetWidgets = new QList<DatasetWidget*>;
+
     m_datasetsLayout = new QVBoxLayout();
 
     m_datasetsInnerLayout = new QVBoxLayout();
@@ -57,6 +58,10 @@ MainWindow::MainWindow(QWidget *parent) :
     // chart config layout
     m_chartConfigWidget = new ChartConfigWidget();
     m_chartConfigWidget->setChartView(m_chartWidget);
+    connect(m_chartConfigWidget,
+            SIGNAL(xFieldChanged()),
+            this,
+            SLOT(updateChartXField()));
 
     m_chartConfigPanel = new Panel();
     m_chartConfigPanel->setContentWidget(m_chartConfigWidget);
@@ -196,38 +201,17 @@ void MainWindow::addDataset(Dataset *dataset)
                 SLOT(showHideCurve(CurvePlotButton*)));
     }
 
-    // add dataset to private list
-    m_datasetsList.append(dataset);
-
-    // update list of fields
-    m_chartConfigWidget->updateXFields(listFields());
-}
-
-
-
-void MainWindow::addDatasetFromUI(Dataset *dataset)
-{
-    DatasetWidget *widget = new DatasetWidget();
-    widget->setDataset(dataset);
-    widget->update();
-    m_datasetsInnerLayout->addWidget(widget);
-
-    // build connection for field items display button
-    for (DatasetWidgetFieldItem* fieldItem : *widget->getFieldItems())
-    {
-        // pass infos to button
-        fieldItem->getButton()->setDataset(dataset);
-        fieldItem->getButton()->setXName(m_chartConfigWidget->getXName());
-        fieldItem->getButton()->setYName(fieldItem->getName());
-
-        connect(fieldItem->getButton(),
-                SIGNAL(buttonClicked(CurvePlotButton*)),
-                this,
-                SLOT(showHideCurve(CurvePlotButton*)));
-    }
+    // build connection for dataset widget delete button
+    connect(widget,
+            SIGNAL(deleteSignal(DatasetWidget*)),
+            this,
+            SLOT(removeDataset(DatasetWidget*)));
 
     // add dataset to private list
     m_datasetsList.append(dataset);
+
+    // add dataset widget to private list
+    m_datasetWidgets->append(widget);
 
     // update list of fields
     m_chartConfigWidget->updateXFields(listFields());
@@ -294,3 +278,72 @@ void MainWindow::importR()
         addDataset(dataset);
     }
 }
+
+
+void MainWindow::removeDataset(DatasetWidget *datasetWidget)
+{
+    // remove dataset from list of datasets
+    m_datasetsList.removeOne(datasetWidget->getDataset());
+
+    // delete dataset
+    delete datasetWidget->getDataset();
+
+    // remove dataset widget from list of datasets widgets
+    m_datasetWidgets->removeOne(datasetWidget);
+
+    // delete dataset widget
+    datasetWidget->deleteLater();
+
+    // update list of fields
+    m_chartConfigWidget->updateXFields(listFields());
+}
+
+
+void MainWindow::updateChartXField()
+{
+    string xName = *(m_chartConfigWidget->getXName());
+
+    // update current curves
+    for (CurveConfigWidget *configWidget : *m_curveConfigWidgets)
+    {
+        Curve *curve = configWidget->getCurve();
+
+        // check the curve's dataset has a field nammed $xName
+        if (curve->getDataset().hasFieldNammed(xName))
+        {
+            // update curve
+            curve->setXFieldName(xName);
+            curve->updateData();
+        }
+        else
+        {
+            // remove curve
+            removeCurve(curve);
+        }
+    }
+
+    // update plot buttons in the dataset widget
+    for (DatasetWidget *datasetWidget : *m_datasetWidgets)
+    {
+        // find if fields of the dataset can be plotted
+        // ie: has the dataset a field nammed $xName ?
+        Dataset *dataset = datasetWidget->getDataset();
+        if (dataset->hasFieldNammed(xName))
+        {
+            // activate plot button of fields widgets
+            for (DatasetWidgetFieldItem *fieldItem : *(datasetWidget->getFieldItems()))
+            {
+                fieldItem->getButton()->setEnabled(true);
+            }
+        }
+        else
+        {
+            // deactivate plot button of fields widgets
+            for (DatasetWidgetFieldItem *fieldItem : *(datasetWidget->getFieldItems()))
+            {
+                fieldItem->getButton()->setEnabled(false);
+            }
+        }
+    }
+}
+

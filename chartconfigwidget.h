@@ -102,7 +102,7 @@ public:
     explicit ChartConfigWidget(QWidget *parent = nullptr);
     ~ChartConfigWidget();
     void setChartView(QChartView *chartView);
-    void updateXFieldName();
+    void updateChartXField();
     // X field
     void updateXFields(QList<string> list);
     // X
@@ -119,6 +119,7 @@ public:
     string* getXName();
 
 signals:
+    void xFieldChanged();
 
 public slots:
 };

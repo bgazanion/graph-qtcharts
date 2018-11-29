@@ -11,7 +11,9 @@
 #include <QToolButton>
 #include <QCheckBox>
 #include <QList>
+#include <QPushButton>
 #include <string>
+#include <iostream>
 #include "datasetwidgetfielditem.h"
 #include "dataset.h"
 
@@ -31,6 +33,8 @@ private:
     QLabel *m_titleLabel;
     QHBoxLayout *m_titleLayout;
     QToolButton *m_showButton;
+    QPushButton *m_deleteButton;
+
     // field details
     QWidget *m_detailWidget;
     QVBoxLayout *m_fieldsLayout;
@@ -42,10 +46,19 @@ public:
     void update();
     void showHide();
     QList<DatasetWidgetFieldItem*>* getFieldItems();
+    QPushButton* getDeleteButton();
+    Dataset* getDataset();
 
 signals:
+    void deleteSignal(DatasetWidget *datasetWidget);
 
-public slots:
+private slots:
+    void handleDeleteClick()
+    {
+        cout << "emitting signal..." << endl;
+        emit(deleteSignal(this));
+        cout << "...done" << endl;
+    }
 };
 
 #endif // DATASETWIDGET_H

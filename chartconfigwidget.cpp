@@ -29,7 +29,7 @@ ChartConfigWidget::ChartConfigWidget(QWidget *parent) : QWidget(parent)
 
     m_xNameBox = new QComboBox();
     connect(m_xNameBox, &QComboBox::currentTextChanged,
-            this, &ChartConfigWidget::updateXFieldName);
+            this, &ChartConfigWidget::updateChartXField);
 
     m_xNameLayout = new QHBoxLayout();
     m_xNameLayout->addWidget(m_xNameLabel);
@@ -308,9 +308,10 @@ void ChartConfigWidget::updateXFields(QList<string> list)
 }
 
 
-void ChartConfigWidget::updateXFieldName()
+void ChartConfigWidget::updateChartXField()
 {
     m_xName->assign(m_xNameBox->currentText().toStdString());
+    emit(xFieldChanged());
 }
 
 

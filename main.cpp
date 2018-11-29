@@ -164,6 +164,7 @@ int main(int argc, char *argv[])
 
 
     //-- debug curve V2
+    /*
     QApplication a(argc, argv);
     MainWindow window;
 
@@ -186,21 +187,12 @@ int main(int argc, char *argv[])
     std::string fileName2 = "D:\\Prog\\datasets\\Rdatasets\\cps1_short_modif.csv";
     Dataset data2 = readR(fileName2);
     window.addDataset(&data2);
-
-    /*
-    QChart *chart = new QChart();
-    chart->addSeries(curve);
-    chart->createDefaultAxes();
-
-    QChartView *chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
-
-    MainWindow window;
-    window.setChart(chart);
-    //window.setCentralWidget(chartView);
     */
 
-    window.resize(400, 300);
+
+
+    QApplication a(argc, argv);
+    MainWindow window;
     window.show();
     return a.exec();
 

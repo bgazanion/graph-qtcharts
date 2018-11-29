@@ -42,6 +42,7 @@ private:
     // datasets
     QVBoxLayout *m_datasetsLayout;
     QVBoxLayout *m_datasetsInnerLayout;
+    QList<DatasetWidget*> *m_datasetWidgets;
     Panel *m_datasetsPanel;
     QList<Dataset*> m_datasetsList;
     // chart
@@ -67,12 +68,14 @@ public:
     QList<string> listFields();
     void importCSV();
     void importR();
+    void updatePlotButtons();
 
 signals:
 
 private slots:
     void showHideCurve(CurvePlotButton *button);
-    void addDatasetFromUI(Dataset *dataset);
+    void removeDataset(DatasetWidget *datasetWidget);
+    void updateChartXField();
 };
 
 #endif // MAINWINDOW_H

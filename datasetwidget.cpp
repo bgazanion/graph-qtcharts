@@ -8,17 +8,23 @@ DatasetWidget::DatasetWidget(QWidget *parent) : QWidget(parent)
     m_fieldItems = new QList<DatasetWidgetFieldItem*>;
 
     // GUI first level : title
-    m_titleLayout = new QHBoxLayout();
-
     m_showButton = new QToolButton();
     m_showButton->setArrowType(Qt::ArrowType::DownArrow);
     m_showButton->setCheckable(true);
     m_showButton->setChecked(false);
     connect(m_showButton, &QToolButton::clicked, this, &DatasetWidget::showHide);
-    m_titleLayout->addWidget(m_showButton);
 
     m_titleLabel = new QLabel();
+
+    m_deleteButton = new QPushButton();
+    m_deleteButton->setText("Close");
+    // m_deleteButton->setIcon(style()->standardIcon(QStyle::SP_DialogCancelButton));
+    connect(m_deleteButton, SIGNAL(clicked()), this, SLOT(handleDeleteClick()));
+
+    m_titleLayout = new QHBoxLayout();
+    m_titleLayout->addWidget(m_showButton);
     m_titleLayout->addWidget(m_titleLabel);
+    m_titleLayout->addWidget(m_deleteButton);
 
     // GUI second level : fields details (foldable)
     m_subLayout = new QHBoxLayout();
@@ -106,4 +112,16 @@ void DatasetWidget::showHide()
 QList<DatasetWidgetFieldItem*>* DatasetWidget::getFieldItems()
 {
     return m_fieldItems;
+}
+
+
+QPushButton* DatasetWidget::getDeleteButton()
+{
+    return m_deleteButton;
+}
+
+
+Dataset* DatasetWidget::getDataset()
+{
+    return m_dataset;
 }

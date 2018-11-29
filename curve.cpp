@@ -71,6 +71,9 @@ unsigned int Curve::getWidth()
 //-----------------------------------------------------------------------------
 void Curve::updateData()
 {
+    // reset existing data
+    this->clear();
+
     // preliminary checks
     if (m_xFieldName == "")
     {
