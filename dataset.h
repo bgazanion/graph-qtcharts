@@ -40,6 +40,7 @@ public:
     Field getField(std::string name);
     void printInfo();
     std::string getTitle();
+    bool hasFieldNammed(std::string name);
 
 };
 
