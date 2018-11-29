@@ -131,3 +131,16 @@ std::string Dataset::getTitle()
 {
     return m_title;
 }
+
+
+bool Dataset::hasFieldNammed(std::string name)
+{
+    if (std::find(m_names.begin(), m_names.end(), name) != m_names.end())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
