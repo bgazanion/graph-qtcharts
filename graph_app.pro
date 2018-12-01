@@ -24,39 +24,39 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-        field.cpp \
-    dataset.cpp \
-    rng.cpp \
-    readers.cpp \
-    stringlib.cpp \
-    curve.cpp \
-    curveconfigwidget.cpp \
-    datasetwidget.cpp \
-    datasetwidgetfielditem.cpp \
-    chartconfigwidget.cpp \
-    panel.cpp \
-    curveplotbutton.cpp \
-    importwindow.cpp \
-    messagewindow.cpp
+    Code/chartconfigwidget.cpp \
+    Code/curve.cpp \
+    Code/curveconfigwidget.cpp \
+    Code/curveplotbutton.cpp \
+    Code/dataset.cpp \
+    Code/datasetwidget.cpp \
+    Code/field.cpp \
+    Code/datasetwidgetfielditem.cpp \
+    Code/importwindow.cpp \
+    Code/main.cpp \
+    Code/mainwindow.cpp \
+    Code/messagewindow.cpp \
+    Code/panel.cpp \
+    Code/readers.cpp \
+    Code/rng.cpp \
+    Code/stringlib.cpp
 
 HEADERS += \
-        mainwindow.h \
-        field.h \
-    dataset.h \
-    rng.h \
-    readers.h \
-    stringlib.h \
-    curve.h \
-    curveconfigwidget.h \
-    datasetwidget.h \
-    datasetwidgetfielditem.h \
-    chartconfigwidget.h \
-    panel.h \
-    curveplotbutton.h \
-    importwindow.h \
-    messagewindow.h
+    Code/chartconfigwidget.h \
+    Code/curve.h \
+    Code/curveconfigwidget.h \
+    Code/curveplotbutton.h \
+    Code/dataset.h \
+    Code/datasetwidget.h \
+    Code/datasetwidgetfielditem.h \
+    Code/field.h \
+    Code/importwindow.h \
+    Code/mainwindow.h \
+    Code/messagewindow.h \
+    Code/panel.h \
+    Code/readers.h \
+    Code/rng.h \
+    Code/stringlib.h
 
 FORMS += \
         mainwindow.ui
