@@ -72,3 +72,6 @@ else:unix: LIBS += -LC:/Qt/5.11.1/msvc2017_64/lib/ -lQt5Charts
 
 INCLUDEPATH += C:/Qt/5.11.1/msvc2017_64/include
 DEPENDPATH += C:/Qt/5.11.1/msvc2017_64/include
+
+RESOURCES += \
+    ressources.qrc

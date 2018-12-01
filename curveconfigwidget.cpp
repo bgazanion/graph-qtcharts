@@ -43,13 +43,16 @@ CurveConfigWidget::CurveConfigWidget(QWidget *parent) : QWidget(parent)
     m_layout->addWidget(m_styleText);
 
     m_styleButton = new QComboBox();
-    m_styleButton->setMaximumWidth(static_cast<int>(0.5*m_baseWidth));
-    m_styleButton->setMinimumWidth(static_cast<int>(0.5*m_baseWidth));
+    m_styleButton->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     m_styleButton->setMaximumHeight(m_height);
-    for (QString indexStyle : m_styleStringArray)
+    for (QString linestyleIcon : m_styleIconsArray)
     {
-        m_styleButton->addItem(indexStyle);
+        QIcon icon;
+        // icon.addPixmap(QPixmap(":/Icons/linestyle_line"));
+        icon.addPixmap(QPixmap(linestyleIcon));
+        m_styleButton->addItem(icon, "");
     }
+    m_styleButton->setIconSize(QSize(90, 20));
     connect(m_styleButton, QOverload<int>::of(&QComboBox::activated), this, &CurveConfigWidget::setStyle);
     m_layout->addWidget(m_styleButton);
 

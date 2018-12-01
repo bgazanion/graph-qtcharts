@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/Icons">
+        <file alias="linestyle_line">Icons/linestyle_line.png</file>
+        <file alias="linestyle_dash">Icons/linestyle_dash.png</file>
+        <file alias="linestyle_dashdot">Icons/linestyle_dashdot.png</file>
+        <file alias="linestyle_dashdotdot">Icons/linestyle_dashdotdot.png</file>
+        <file alias="linestyle_dot">Icons/linestyle_dot.png</file>
+    </qresource>
+</RCC>

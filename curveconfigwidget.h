@@ -37,13 +37,13 @@ private:
         Qt::PenStyle::DashDotLine,
         Qt::PenStyle::DashDotDotLine
     };
-    QString m_styleStringArray[5] =
+    QString m_styleIconsArray[5] =
     {
-        "-",
-        "--",
-        ".",
-        "-.",
-        "-.."
+        ":/Icons/linestyle_line",
+        ":/Icons/linestyle_dash",
+        ":/Icons/linestyle_dot",
+        ":/Icons/linestyle_dashdot",
+        ":/Icons/linestyle_dashdotdot"
     };
     QLabel *m_colorRect;
 
