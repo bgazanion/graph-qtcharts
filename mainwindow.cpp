@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_curvesConfigPanel = new Panel();
     m_curvesConfigPanel->setContentLayout(m_curveConfigLayout);
     m_curvesConfigPanel->setTitle("Curves settings");
-    m_curvesConfigPanel->setFixedWidth(400);
+    m_curvesConfigPanel->setFixedWidth(600);
     m_curvesConfigPanel->setFixedHeight(200);
 
     m_curveConfigWidgets = new QList<CurveConfigWidget*>;
@@ -25,11 +25,12 @@ MainWindow::MainWindow(QWidget *parent) :
     // curves display (chart view)
     m_chartWidget = new QChartView();
     m_chartWidget->setRenderHint(QPainter::Antialiasing);
+    m_chartWidget->chart()->legend()->setVisible(false);
 
     m_chartPanel = new Panel();
     m_chartPanel->setContentWidget(m_chartWidget);
     m_chartPanel->setFixedWidth(600);
-    m_chartPanel->setFixedHeight(600);
+    m_chartPanel->setFixedHeight(400);
 
 
     // curves layout
@@ -52,7 +53,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_datasetsPanel = new Panel();
     m_datasetsPanel->setContentLayout(m_datasetsLayout);
     m_datasetsPanel->setTitle("Datasets");
-    m_datasetsPanel->setFixedHeight(800);
+    m_datasetsPanel->setFixedHeight(600);
     m_datasetsPanel->setFixedWidth(400);
 
     // chart config layout
@@ -66,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_chartConfigPanel = new Panel();
     m_chartConfigPanel->setContentWidget(m_chartConfigWidget);
     m_chartConfigPanel->setTitle("Chart settings");
-    m_datasetsPanel->setFixedHeight(800);
+    m_datasetsPanel->setFixedHeight(600);
     m_chartConfigPanel->setFixedWidth(350);
 
     // global layout
@@ -92,23 +93,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-
-void MainWindow::addCurve(Curve *curve)
-{
-    // add curve to chart
-    QChart *chart = m_chartWidget->chart();
-    chart->addSeries(curve);
-    chart->createDefaultAxes();
-    m_chartConfigWidget->setXGrid();
-    m_chartConfigWidget->setYGrid();
-
-    // create curve widget
-    CurveConfigWidget *configWidget = new CurveConfigWidget();
-    configWidget->setCurve(curve);
-    m_curveConfigWidgets->append(configWidget);
-    m_curvesListLayout->addWidget(configWidget);
 }
 
 
@@ -152,6 +136,8 @@ void MainWindow::addCurveFromUI(CurvePlotButton *curvePlotButton)
     chart->createDefaultAxes();
     m_chartConfigWidget->setXGrid();
     m_chartConfigWidget->setYGrid();
+    m_chartConfigWidget->setXTitle();
+    m_chartConfigWidget->setYTitle();
 
     // create curve widget
     CurveConfigWidget *configWidget = new CurveConfigWidget();

@@ -51,6 +51,10 @@ private:
     QVBoxLayout *m_xMainLayout;
     QHBoxLayout *m_xTitleLayout;
     QVBoxLayout *m_xContentLayout;
+    // -> title
+    QLabel *m_xAxisTitleLabel;
+    QLineEdit *m_xAxisTitleContent;
+    QHBoxLayout *m_xAxisTitleLayout;
     //  -> grid
     QHBoxLayout *m_xGridLayout;
     QLabel *m_xGridLabel;
@@ -76,6 +80,10 @@ private:
     QVBoxLayout *m_yMainLayout;
     QHBoxLayout *m_yTitleLayout;
     QVBoxLayout *m_yContentLayout;
+    // -> title
+    QLabel *m_yAxisTitleLabel;
+    QLineEdit *m_yAxisTitleContent;
+    QHBoxLayout *m_yAxisTitleLayout;
     //  -> grid
     QHBoxLayout *m_yGridLayout;
     QLabel *m_yGridLabel;
@@ -103,6 +111,7 @@ public:
     ~ChartConfigWidget();
     void setChartView(QChartView *chartView);
     void updateChartXField();
+    void setTitle();
     // X field
     void updateXFields(QList<string> list);
     // X
@@ -110,11 +119,13 @@ public:
     void setXRange();
     void updateXScale();
     void setXGrid();
+    void setXTitle();
     // Y
     void showHideY();
     void setYRange();
     void updateYScale();
     void setYGrid();
+    void setYTitle();
     // data
     string* getXName();
 

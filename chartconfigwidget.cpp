@@ -12,6 +12,8 @@ ChartConfigWidget::ChartConfigWidget(QWidget *parent) : QWidget(parent)
     m_titleLabel->setText("Title");
 
     m_titleField = new QLineEdit();
+    connect(m_titleField, &QLineEdit::textChanged,
+            this, &ChartConfigWidget::setTitle);
 
     m_titleLayout = new QHBoxLayout();
     m_titleLayout->addWidget(m_titleLabel);
@@ -28,6 +30,7 @@ ChartConfigWidget::ChartConfigWidget(QWidget *parent) : QWidget(parent)
     m_xNameLabel->setText("X field");
 
     m_xNameBox = new QComboBox();
+    m_xNameBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     connect(m_xNameBox, &QComboBox::currentTextChanged,
             this, &ChartConfigWidget::updateChartXField);
 
@@ -40,13 +43,12 @@ ChartConfigWidget::ChartConfigWidget(QWidget *parent) : QWidget(parent)
     //------------------------------------------------
     // X axis
     //------------------------------------------------
-    //  -> title
+    //  -> layout title
     m_xButton = new QToolButton();
     m_xButton->setArrowType(Qt::ArrowType::DownArrow);
     m_xButton->setCheckable(true);
     m_xButton->setChecked(false);
     connect(m_xButton, &QToolButton::clicked, this, &ChartConfigWidget::showHideX);
-
 
     m_xLabel = new QLabel();
     m_xLabel->setText("X axis");
@@ -54,6 +56,19 @@ ChartConfigWidget::ChartConfigWidget(QWidget *parent) : QWidget(parent)
     m_xTitleLayout = new QHBoxLayout();
     m_xTitleLayout->addWidget(m_xButton);
     m_xTitleLayout->addWidget(m_xLabel);
+
+    // -> axis title
+    m_xAxisTitleLabel = new QLabel();
+    m_xAxisTitleLabel->setText("Title");
+
+    m_xAxisTitleContent = new QLineEdit();
+    connect(m_xAxisTitleContent, &QLineEdit::textChanged,
+            this, &ChartConfigWidget::setXTitle);
+
+    m_xAxisTitleLayout = new QHBoxLayout();
+    m_xAxisTitleLayout->addWidget(m_xAxisTitleLabel);
+    m_xAxisTitleLayout->addWidget(m_xAxisTitleContent);
+    m_xAxisTitleLayout->addStretch(0);
 
     //  -> grid
     m_xGridLabel = new QLabel();
@@ -112,6 +127,7 @@ ChartConfigWidget::ChartConfigWidget(QWidget *parent) : QWidget(parent)
 
     //  -> general
     m_xContentLayout = new QVBoxLayout();
+    m_xContentLayout->addLayout(m_xAxisTitleLayout);
     m_xContentLayout->addLayout(m_xGridLayout);
     m_xContentLayout->addLayout(m_xRangeLayout);
     m_xContentLayout->addLayout(m_xLogLayout);
@@ -135,13 +151,25 @@ ChartConfigWidget::ChartConfigWidget(QWidget *parent) : QWidget(parent)
     m_yButton->setChecked(false);
     connect(m_yButton, &QToolButton::clicked, this, &ChartConfigWidget::showHideY);
 
-
     m_yLabel = new QLabel();
     m_yLabel->setText("Y axis");
 
     m_yTitleLayout = new QHBoxLayout();
     m_yTitleLayout->addWidget(m_yButton);
     m_yTitleLayout->addWidget(m_yLabel);
+
+    // -> axis title
+    m_yAxisTitleLabel = new QLabel();
+    m_yAxisTitleLabel->setText("Title");
+
+    m_yAxisTitleContent = new QLineEdit();
+    connect(m_yAxisTitleContent, &QLineEdit::textChanged,
+            this, &ChartConfigWidget::setYTitle);
+
+    m_yAxisTitleLayout = new QHBoxLayout();
+    m_yAxisTitleLayout->addWidget(m_yAxisTitleLabel);
+    m_yAxisTitleLayout->addWidget(m_yAxisTitleContent);
+    m_yAxisTitleLayout->addStretch(0);
 
     //  -> grid
     m_yGridLabel = new QLabel();
@@ -200,6 +228,7 @@ ChartConfigWidget::ChartConfigWidget(QWidget *parent) : QWidget(parent)
 
     //  -> general
     m_yContentLayout = new QVBoxLayout();
+    m_yContentLayout->addLayout(m_yAxisTitleLayout);
     m_yContentLayout->addLayout(m_yGridLayout);
     m_yContentLayout->addLayout(m_yRangeLayout);
     m_yContentLayout->addLayout(m_yLogLayout);
@@ -308,6 +337,12 @@ void ChartConfigWidget::updateXFields(QList<string> list)
 }
 
 
+void ChartConfigWidget::setTitle()
+{
+    m_chartView->chart()->setTitle(m_titleField->text());
+}
+
+
 void ChartConfigWidget::updateChartXField()
 {
     m_xName->assign(m_xNameBox->currentText().toStdString());
@@ -332,12 +367,14 @@ void ChartConfigWidget::showHideX()
 
 void ChartConfigWidget::setXRange()
 {
-    QVariant min = m_xMinField->text();
-    m_chartView->chart()->axisX()->setMin(min);
+    if (m_chartView->chart()->axisX() != nullptr)
+    {
+        QVariant min = m_xMinField->text();
+        m_chartView->chart()->axisX()->setMin(min);
 
-    QVariant max = m_xMaxField->text();
-    m_chartView->chart()->axisX()->setMax(max);
-
+        QVariant max = m_xMaxField->text();
+        m_chartView->chart()->axisX()->setMax(max);
+    }
 }
 
 
@@ -395,12 +432,23 @@ void ChartConfigWidget::updateXScale()
 
 void ChartConfigWidget::setXGrid()
 {
-    if (m_xGridButton->isChecked())
-        m_chartView->chart()->axisX()->setGridLineVisible(true);
-    else
-        m_chartView->chart()->axisX()->setGridLineVisible(false);
+    if (m_chartView->chart()->axisX() != nullptr)
+    {
+        if (m_xGridButton->isChecked())
+            m_chartView->chart()->axisX()->setGridLineVisible(true);
+        else
+            m_chartView->chart()->axisX()->setGridLineVisible(false);
+    }
 }
 
+
+void ChartConfigWidget::setXTitle()
+{
+    if (m_chartView->chart()->axisX() != nullptr)
+    {
+        m_chartView->chart()->axisX()->setTitleText(m_xAxisTitleContent->text());
+    }
+}
 
 
 void ChartConfigWidget::showHideY()
@@ -420,12 +468,14 @@ void ChartConfigWidget::showHideY()
 
 void ChartConfigWidget::setYRange()
 {
-    QVariant min = m_yMinField->text();
-    m_chartView->chart()->axisY()->setMin(min);
+    if (m_chartView->chart()->axisY() != nullptr)
+    {
+        QVariant min = m_yMinField->text();
+        m_chartView->chart()->axisY()->setMin(min);
 
-    QVariant max = m_yMaxField->text();
-    m_chartView->chart()->axisY()->setMax(max);
-
+        QVariant max = m_yMaxField->text();
+        m_chartView->chart()->axisY()->setMax(max);
+    }
 }
 
 
@@ -483,10 +533,22 @@ void ChartConfigWidget::updateYScale()
 
 void ChartConfigWidget::setYGrid()
 {
-    if (m_yGridButton->isChecked())
-        m_chartView->chart()->axisY()->setGridLineVisible(true);
-    else
-        m_chartView->chart()->axisY()->setGridLineVisible(false);
+    if (m_chartView->chart()->axisY() != nullptr)
+    {
+        if (m_yGridButton->isChecked())
+            m_chartView->chart()->axisY()->setGridLineVisible(true);
+        else
+            m_chartView->chart()->axisY()->setGridLineVisible(false);
+    }
+}
+
+
+void ChartConfigWidget::setYTitle()
+{
+    if (m_chartView->chart()->axisY() != nullptr)
+    {
+        m_chartView->chart()->axisY()->setTitleText(m_yAxisTitleContent->text());
+    }
 }
 
 
